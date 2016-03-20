@@ -1,36 +1,11 @@
 package com.brolaugh.itg.tasklist.database;
 
-
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 
-public class DatabaseConnection {
-    private String host = "home.rickfo.se";
-    private String database = "brolaugh_tasklist";
-    private String user = "brolaugh";
-    private String password = "hannes";
-    private String driver = "com.mysql.jdbc.Driver";
-    private Connection dbc;
+public class DatabaseConnection extends DBSetup{
 
-    public DatabaseConnection(){
-        try{
-            Class.forName(driver).newInstance();
-            dbc = DriverManager.getConnection("jdbc:mysql://"+host+"/"+database,user,password);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void close(){
-        try {
-            dbc.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
     public LinkedList<Task> getTasks(){
         LinkedList<Task> retval = new LinkedList<Task>();
         try{
@@ -71,7 +46,7 @@ public class DatabaseConnection {
                 while(result.next()){
                     tasks.get(i).addStatus(
                             new Status(result.getInt("status_id") ,result.getString("user"),result.getTimestamp("stamp"),
-                            new StatusLevel(result.getInt("level_id"), result.getString("plain_text"), result.getString("style_class"))
+                                new StatusLevel(result.getInt("level_id"), result.getString("plain_text"), result.getString("style_class"))
                     ));
                 }
             }
@@ -79,5 +54,19 @@ public class DatabaseConnection {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+    public LinkedList<StatusLevel>  getStatusLevels(){
+            LinkedList<StatusLevel> retval = new LinkedList<StatusLevel>();
+            try{
+                PreparedStatement stmt = dbc.prepareStatement("SELECT * FROM status_level");
+                ResultSet result = stmt.executeQuery();
+                while(result.next()){
+                    retval.add(new StatusLevel(result.getInt("id"), result.getString("plain_text"), result.getString("style_class")));
+                }
+                stmt.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        return retval;
     }
 }
