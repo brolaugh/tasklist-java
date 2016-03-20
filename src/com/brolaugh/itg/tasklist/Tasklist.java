@@ -2,15 +2,12 @@ package com.brolaugh.itg.tasklist;
 
 
 import com.brolaugh.itg.tasklist.database.DatabaseConnection;
+import com.brolaugh.itg.tasklist.database.StatusLevel;
 import com.brolaugh.itg.tasklist.database.Task;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -29,20 +26,26 @@ public class Tasklist extends Application {
     public void start(Stage primaryStage) throws Exception {
         //The top menu
         final Menu filterMenu = new Menu("Filter");
-        final Menu optionsMenu = new Menu("options");
+        for(StatusLevel sl : dbc.getStatusLevels()){
+            filterMenu.getItems().add(new MenuItem(sl.getPlain_text(), new CheckBox()));
+        }
+
+        final Menu optionsMenu = new Menu("Options");
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(filterMenu,optionsMenu);
 
-        ListView<Task> list = new ListView<Task>();
+        ListView<Task> list = new ListView<>();
         LinkedList<Task> t = dbc.getTasks();
         dbc.getStatuses(t);
-        //ObservableList<Task> listitems = new FXCollections.observableList(t);
+        //ObservableList<Task> listitem;
         //list.setItems(listitems);
+
         //Scene building
         StackPane root = new StackPane();
         Scene mainScene = new Scene(root, 1280, 720);
         BorderPane rootLayout = new BorderPane();
 
+        //Putting everything together
         rootLayout.setTop(menuBar);
         rootLayout.setCenter(list);
         root.getChildren().add(rootLayout);
