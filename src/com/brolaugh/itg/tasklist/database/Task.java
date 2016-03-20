@@ -1,11 +1,7 @@
 package com.brolaugh.itg.tasklist.database;
 
 import java.util.LinkedList;
-
-/**
- * Created by Brolaugh on 2016-03-19.
- */
-public class Task {
+class Task {
     private int id;
     private String title;
     private String description;

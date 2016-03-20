@@ -2,9 +2,6 @@ package com.brolaugh.itg.tasklist.database;
 
 import java.awt.Color;
 
-/**
- * Created by Brolaugh on 2016-03-19.
- */
 public class StatusLevel {
     private int id;
     private String plain_text;
