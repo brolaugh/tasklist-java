@@ -1,7 +1,7 @@
 package com.brolaugh.itg.tasklist.database;
 
 import java.util.LinkedList;
-class Task {
+public class Task {
     private int id;
     private String title;
     private String description;

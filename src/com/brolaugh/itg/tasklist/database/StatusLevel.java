@@ -37,11 +37,18 @@ public class StatusLevel {
             backgroundColor = new Color(238, 238, 238);
         }
     }
+    public boolean equals(StatusLevel s){
+        if(id != s.id)
+            return false;
+        else
+            return true;
+
+    }
     public int getId() {
         return id;
     }
 
-    public String getPlain_text() {
+    public String getPlainText() {
         return plain_text;
     }
 

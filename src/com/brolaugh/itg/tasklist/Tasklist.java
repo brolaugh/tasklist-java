@@ -27,7 +27,7 @@ public class Tasklist extends Application {
         //The top menu
         final Menu filterMenu = new Menu("Filter");
         for(StatusLevel sl : dbc.getStatusLevels()){
-            filterMenu.getItems().add(new MenuItem(sl.getPlain_text(), new CheckBox()));
+            filterMenu.getItems().add(new MenuItem(sl.getPlainText(), new CheckBox()));
         }
 
         final Menu optionsMenu = new Menu("Options");
