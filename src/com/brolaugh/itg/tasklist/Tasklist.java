@@ -5,6 +5,7 @@ import com.brolaugh.itg.tasklist.database.DatabaseConnection;
 import com.brolaugh.itg.tasklist.database.StatusLevel;
 import com.brolaugh.itg.tasklist.database.Task;
 
+import com.brolaugh.itg.tasklist.graphical.TaskItem;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -40,14 +41,18 @@ public class Tasklist extends Application {
         //ObservableList<Task> listitem;
         //list.setItems(listitems);
 
+
         //Scene building
         StackPane root = new StackPane();
         Scene mainScene = new Scene(root, 1280, 720);
         BorderPane rootLayout = new BorderPane();
 
+        //Adding CSS to UI
+        mainScene.getStylesheets().add("/com/brolaugh/itg/tasklist/tasklist.css");
+
         //Putting everything together
         rootLayout.setTop(menuBar);
-        rootLayout.setCenter(list);
+        rootLayout.setCenter(new TaskItem(t.getLast()));
         root.getChildren().add(rootLayout);
 
         //Final touches

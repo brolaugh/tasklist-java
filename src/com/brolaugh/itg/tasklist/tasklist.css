@@ -1,0 +1,25 @@
+
+.danger{
+    -fx-color: rgb(254,241,240);
+    -fx-background-color: rgb(244,67,54);
+}
+.warning{
+    -fx-color: rgb(255,236,230);
+    -fx-background-color: rgb(255,87,34);
+}
+.info{
+    -fx-color: rgb(228,246,255);
+    -fx-background-color: rgb(3,169,244);
+}
+.success{
+    -fx-color: rgb(75,175,80);
+    -fx-background-color: rgb(225,242,226);
+}
+.primary{
+    -fx-color: rgb(228,255,253);
+    -fx-background-color: rgb(0,150,136);
+}
+.default{
+    -fx-color: rgb(255,255,255);
+    -fx-background-color: rgb(238,238,238);
+}

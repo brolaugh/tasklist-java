@@ -22,7 +22,7 @@ public class Status {
     }
 
     public void print(){
-        System.out.println("\t" + user + " changed status to " + level.getPlain_text());
+        System.out.println("\t" + user + " changed status to " + level.getPlainText());
     }
 
 

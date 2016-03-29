@@ -5,12 +5,14 @@ import java.awt.Color;
 public class StatusLevel {
     private int id;
     private String plain_text;
+    private String style;
     private Color foregroundColor;
     private Color backgroundColor;
 
     public StatusLevel(int id, String plain_text, String style){
         this.id = id;
         this.plain_text = plain_text;
+        this.style = style;
         if(style.equals("danger")){
             foregroundColor = new Color(254, 241, 240);
             backgroundColor =  new Color(244, 67, 54);
@@ -58,5 +60,8 @@ public class StatusLevel {
 
     public Color getBackgroundColor() {
         return backgroundColor;
+    }
+    public String getCSSClass(){
+        return this.style;
     }
 }
