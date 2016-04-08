@@ -20,6 +20,7 @@ public class Task {
         this.title = title;
         this.description = description;
         statuses = new LinkedList<Status>();
+        statuses.add(new Status(new StatusLevel(1, "TempAdded", "default"), "Unknown"));
     }
     public Task(int id, String title, String description, LinkedList<Status> statuses){
         this.id = id;
@@ -42,8 +43,6 @@ public class Task {
             s.print();
         }
         System.out.println("____________________________");
-
-
     }
     public void addStatus(Status s){
         statuses.add(s);

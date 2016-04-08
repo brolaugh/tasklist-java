@@ -38,6 +38,9 @@ public class StatusLevel {
             foregroundColor = new Color(255,255,255);
             backgroundColor = new Color(238, 238, 238);
         }
+        else{
+            System.out.println("Faulty style: " + style);
+        }
     }
     public boolean equals(StatusLevel s){
         if(id != s.id)

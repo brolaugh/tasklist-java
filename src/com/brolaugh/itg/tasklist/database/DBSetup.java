@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBSetup {
-    private String host = "";
-    private String database = "";
-    private String user = "";
-    private String password = "";
+    private String host = "home.rickfo.se";
+    private String database = "brolaugh_tasklist";
+    private String user = "brolaugh";
+    private String password = "rickardh";
     private String driver = "com.mysql.jdbc.Driver";
     protected Connection dbc;
 

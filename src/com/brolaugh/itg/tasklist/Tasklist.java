@@ -7,6 +7,8 @@ import com.brolaugh.itg.tasklist.database.Task;
 
 import com.brolaugh.itg.tasklist.graphical.TaskItem;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -18,9 +20,11 @@ import java.util.LinkedList;
 
 public class Tasklist extends Application {
     private DatabaseConnection dbc = new DatabaseConnection();
+    private ObservableList<TaskItem> listitem = FXCollections.observableArrayList();
+    private LinkedList<Task> tasks;
     public Tasklist(){
-
-
+        tasks = dbc.getTasks();
+        dbc.getStatuses(tasks);
     }
 
     @Override
@@ -35,11 +39,15 @@ public class Tasklist extends Application {
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(filterMenu,optionsMenu);
 
-        ListView<Task> list = new ListView<>();
-        LinkedList<Task> t = dbc.getTasks();
-        dbc.getStatuses(t);
-        //ObservableList<Task> listitem;
-        //list.setItems(listitems);
+        //Loading tasks into the application
+        ListView<TaskItem> list = new ListView<>();
+
+        ObservableList<TaskItem> listitem = FXCollections.observableArrayList();
+        //Adding tasks to the viewable list
+        for(Task task: tasks){
+            listitem.add(new TaskItem(task));
+        }
+        list.setItems(listitem);
 
 
         //Scene building
@@ -52,7 +60,7 @@ public class Tasklist extends Application {
 
         //Putting everything together
         rootLayout.setTop(menuBar);
-        rootLayout.setCenter(new TaskItem(t.getLast()));
+        rootLayout.setCenter(list);
         root.getChildren().add(rootLayout);
 
         //Final touches
@@ -62,6 +70,7 @@ public class Tasklist extends Application {
     }
 
     public static void main(String[] args){
+        new Tasklist();
         launch(args);
 
     }
