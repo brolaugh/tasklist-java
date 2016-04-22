@@ -19,7 +19,7 @@ public class TaskItem extends BorderPane{
         this.setTop(new Text(this.item.getTitle()));
         this.setCenter(new Text(this.item.getDescription()));
         //this.setLeft(new Icon);
-        item.print();
+        //item.print();
 
 
 
@@ -31,5 +31,8 @@ public class TaskItem extends BorderPane{
     }
     public Status getStatusLevel(){
         return this.item.getStatuses().getLast();
+    }
+    public Task getTask(){
+        return this.item;
     }
 }

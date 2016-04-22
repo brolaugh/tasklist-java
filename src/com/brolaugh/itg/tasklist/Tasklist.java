@@ -5,6 +5,7 @@ import com.brolaugh.itg.tasklist.database.DatabaseConnection;
 import com.brolaugh.itg.tasklist.database.StatusLevel;
 import com.brolaugh.itg.tasklist.database.Task;
 
+import com.brolaugh.itg.tasklist.graphical.TaskEditor;
 import com.brolaugh.itg.tasklist.graphical.TaskItem;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -22,7 +23,9 @@ public class Tasklist extends Application {
     private DatabaseConnection dbc = new DatabaseConnection();
     private ObservableList<TaskItem> listitem = FXCollections.observableArrayList();
     private LinkedList<Task> tasks;
-    public Tasklist(){
+    private TaskEditor rightMenu;
+
+    public Tasklist() {
         tasks = dbc.getTasks();
         dbc.getStatuses(tasks);
     }
@@ -31,23 +34,32 @@ public class Tasklist extends Application {
     public void start(Stage primaryStage) throws Exception {
         //The top menu
         final Menu filterMenu = new Menu("Filter");
-        for(StatusLevel sl : dbc.getStatusLevels()){
+        for (StatusLevel sl : dbc.getStatusLevels()) {
             filterMenu.getItems().add(new MenuItem(sl.getPlainText(), new CheckBox()));
         }
 
         final Menu optionsMenu = new Menu("Options");
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(filterMenu,optionsMenu);
+        menuBar.getMenus().addAll(filterMenu, optionsMenu);
 
         //Loading tasks into the application
         ListView<TaskItem> list = new ListView<>();
-
         ObservableList<TaskItem> listitem = FXCollections.observableArrayList();
+
+
         //Adding tasks to the viewable list
-        for(Task task: tasks){
+        for (Task task : tasks) {
             listitem.add(new TaskItem(task));
         }
+
+        rightMenu = new TaskEditor(tasks.getLast());
+        list.setOnMouseClicked(event -> {
+            rightMenu.changeTask(list.getSelectionModel().getSelectedItem().getTask());
+
+        });
+
         list.setItems(listitem);
+
 
 
         //Scene building
@@ -61,6 +73,7 @@ public class Tasklist extends Application {
         //Putting everything together
         rootLayout.setTop(menuBar);
         rootLayout.setCenter(list);
+        rootLayout.setRight(rightMenu);
         root.getChildren().add(rootLayout);
 
         //Final touches
@@ -69,9 +82,10 @@ public class Tasklist extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new Tasklist();
         launch(args);
 
     }
+
 }
