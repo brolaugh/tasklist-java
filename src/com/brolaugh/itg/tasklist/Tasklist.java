@@ -4,10 +4,14 @@ package com.brolaugh.itg.tasklist;
 import com.brolaugh.itg.tasklist.database.DatabaseConnection;
 import com.brolaugh.itg.tasklist.database.StatusLevel;
 import com.brolaugh.itg.tasklist.database.Task;
-
-import com.brolaugh.itg.tasklist.graphical.TaskEditor;
 import com.brolaugh.itg.tasklist.graphical.TaskItem;
+import com.brolaugh.itg.tasklist.graphical.TaskViewer;
+import com.brolaugh.itg.tasklist.utils.ListCheckBox;
+import com.brolaugh.itg.tasklist.utils.ListIndex;
+
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
@@ -23,7 +27,10 @@ public class Tasklist extends Application {
     private DatabaseConnection dbc = new DatabaseConnection();
     private ObservableList<TaskItem> listitem = FXCollections.observableArrayList();
     private LinkedList<Task> tasks;
-    private TaskEditor rightMenu;
+    private TaskViewer rightMenu;
+    private final Menu filterMenu = new Menu("Filter");
+    private ListView<TaskItem> list;
+    private LinkedList<ListIndex> index = new LinkedList<ListIndex>();
 
     public Tasklist() {
         tasks = dbc.getTasks();
@@ -33,9 +40,25 @@ public class Tasklist extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //The top menu
-        final Menu filterMenu = new Menu("Filter");
-        for (StatusLevel sl : dbc.getStatusLevels()) {
-            filterMenu.getItems().add(new MenuItem(sl.getPlainText(), new CheckBox()));
+        LinkedList<StatusLevel> statusLevels = dbc.getStatusLevels();
+        for (StatusLevel sl : statusLevels) {
+            ListCheckBox checkbox = new ListCheckBox(sl.getId());
+            checkbox.setSelected(true);
+            //When value change of the checkbox occurs change is also made to the tasklist
+            checkbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+
+                    if(oldValue != newValue){
+                        editViewList(checkbox.getDbId(), newValue);
+                    }
+
+                }
+            });
+
+
+            MenuItem menuItemInsert = new MenuItem(sl.getPlainText(), checkbox);
+            filterMenu.getItems().add(menuItemInsert);
         }
 
         final Menu optionsMenu = new Menu("Options");
@@ -43,19 +66,22 @@ public class Tasklist extends Application {
         menuBar.getMenus().addAll(filterMenu, optionsMenu);
 
         //Loading tasks into the application
-        ListView<TaskItem> list = new ListView<>();
+        list = new ListView<>();
         ObservableList<TaskItem> listitem = FXCollections.observableArrayList();
 
-
         //Adding tasks to the viewable list
+        int iterator = 0;
         for (Task task : tasks) {
             listitem.add(new TaskItem(task));
+            index.add(new ListIndex(task.getId(), iterator));
         }
 
-        rightMenu = new TaskEditor(tasks.getLast());
+        rightMenu = new TaskViewer(tasks.getLast());
+
+        //Catches clicks in list
+
         list.setOnMouseClicked(event -> {
             rightMenu.changeTask(list.getSelectionModel().getSelectedItem().getTask());
-
         });
 
         list.setItems(listitem);
@@ -80,6 +106,26 @@ public class Tasklist extends Application {
         primaryStage.setTitle("Tasklist");
         primaryStage.setScene(mainScene);
         primaryStage.show();
+    }
+    private void editViewList(int statusLevelId, Boolean value){
+
+        if(value){
+            for(int i = 0; i < index.size(); i++){
+                if(statusLevelId == tasks.get(i).getStatuses().getLast().getLevel().getId()){
+                    list.getItems().add(index.get(tasks.get(i).getId()).getIndex(), new TaskItem(tasks.get(i)));
+                }
+
+            }
+        }else {
+
+            for (int i = 0; i < list.getItems().size(); i++) {
+                if (list.getItems().get(i).getTask().getStatuses().getLast().getLevel().getId() == statusLevelId) {
+                    list.getItems().remove(i);
+                    i--;
+                }
+
+            }
+        }
     }
 
     public static void main(String[] args) {

@@ -22,7 +22,6 @@ public class TaskItem extends BorderPane{
         //item.print();
 
 
-
     }
     public void changeStatus(Status s){
         this.item.addStatus(s);
