@@ -44,6 +44,7 @@ public class Tasklist extends Application {
         for (StatusLevel sl : statusLevels) {
             ListCheckBox checkbox = new ListCheckBox(sl.getId());
             checkbox.setSelected(true);
+
             //When value change of the checkbox occurs change is also made to the tasklist
             checkbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
@@ -79,7 +80,6 @@ public class Tasklist extends Application {
         rightMenu = new TaskViewer(tasks.getLast());
 
         //Catches clicks in list
-
         list.setOnMouseClicked(event -> {
             rightMenu.changeTask(list.getSelectionModel().getSelectedItem().getTask());
         });
@@ -112,9 +112,8 @@ public class Tasklist extends Application {
         if(value){
             for(int i = 0; i < index.size(); i++){
                 if(statusLevelId == tasks.get(i).getStatuses().getLast().getLevel().getId()){
-                    list.getItems().add(index.get(tasks.get(i).getId()).getIndex(), new TaskItem(tasks.get(i)));
+                    list.getItems().add(index.get(i).getIndex(), new TaskItem(tasks.get(i)));
                 }
-
             }
         }else {
 
