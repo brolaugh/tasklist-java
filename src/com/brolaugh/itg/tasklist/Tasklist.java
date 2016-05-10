@@ -25,7 +25,6 @@ import java.util.LinkedList;
 
 public class Tasklist extends Application {
     private DatabaseConnection dbc = new DatabaseConnection();
-    private ObservableList<TaskItem> listitem = FXCollections.observableArrayList();
     private LinkedList<Task> tasks;
     private TaskViewer rightMenu;
     private final Menu filterMenu = new Menu("Filter");
@@ -63,6 +62,7 @@ public class Tasklist extends Application {
         }
 
         final Menu optionsMenu = new Menu("Options");
+
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(filterMenu, optionsMenu);
 
@@ -79,18 +79,20 @@ public class Tasklist extends Application {
 
         rightMenu = new TaskViewer(tasks.getLast());
 
-        //Catches clicks in list
-        list.setOnMouseClicked(event -> {
-            rightMenu.changeTask(list.getSelectionModel().getSelectedItem().getTask());
+        //Whenever an item in the list is selected it becomes the
+        list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TaskItem>() {
+            @Override
+            public void changed(ObservableValue<? extends TaskItem> observable, TaskItem oldValue, TaskItem newValue) {
+                rightMenu.changeTask(list.getSelectionModel().getSelectedItem().getTask());
+            }
         });
-
         list.setItems(listitem);
 
 
 
         //Scene building
         StackPane root = new StackPane();
-        Scene mainScene = new Scene(root, 1280, 720);
+        Scene mainScene = new Scene(root, 1280, 600);
         BorderPane rootLayout = new BorderPane();
 
         //Adding CSS to UI

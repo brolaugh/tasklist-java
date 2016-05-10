@@ -46,7 +46,7 @@ public class TaskViewer extends BorderPane {
             this.setTop(title);
 
             Text t = new Text(this.task.getDescription());
-            t.setWrappingWidth(200);
+            t.setWrappingWidth(this.widthProperty().doubleValue() - 50);
             this.setCenter(t);
 
 
