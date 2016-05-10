@@ -17,16 +17,13 @@ public class TaskItem extends BorderPane{
         Text t = new Text(this.item.getTitle());
         t.setTextAlignment(TextAlignment.JUSTIFY);
         this.setTop(new Text(this.item.getTitle()));
-        this.setCenter(new Text(this.item.getDescription()));
-        //this.setLeft(new Icon);
-        //item.print();
 
+        if(this.item.getDescription().length() >= 70){
+            this.setCenter(new Text(this.item.getDescription().substring(0, 70) + "..."));
+        }else{
+            this.setCenter(new Text(this.item.getDescription()));
+        }
 
-    }
-    public void changeStatus(Status s){
-        this.item.addStatus(s);
-        this.getStyleClass().add(item.getStatuses().getLast().getLevel().getCSSClass());
-        //Add other stuff
     }
     public Status getStatusLevel(){
         return this.item.getStatuses().getLast();
