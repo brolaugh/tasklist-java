@@ -9,6 +9,7 @@ public class ListIndex {
     private int task;
     private int index;
     public ListIndex(int task, int index){
+        //A class for storing where in the Viewable list the item should be stored
         this.task = task;
         this.index = index;
     }

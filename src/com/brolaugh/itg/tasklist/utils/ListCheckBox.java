@@ -2,10 +2,8 @@ package com.brolaugh.itg.tasklist.utils;
 
 import javafx.scene.control.CheckBox;
 
-/**
- * Created by hannes.kindstrommer on 2016-04-26.
- */
 public class ListCheckBox extends CheckBox{
+    // An extension that makes a checkbox comparable to a task by the statusLevelID which is called dbId in this class.
     private int dbId;
     public ListCheckBox(int dbId){
         this.dbId = dbId;

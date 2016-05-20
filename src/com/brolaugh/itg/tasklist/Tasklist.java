@@ -1,6 +1,5 @@
 package com.brolaugh.itg.tasklist;
 
-
 import com.brolaugh.itg.tasklist.database.DatabaseConnection;
 import com.brolaugh.itg.tasklist.database.StatusLevel;
 import com.brolaugh.itg.tasklist.database.Task;
@@ -32,6 +31,7 @@ public class Tasklist extends Application {
     private LinkedList<ListIndex> index = new LinkedList<ListIndex>();
 
     public Tasklist() {
+        //Fetches all the tasks from the database
         tasks = dbc.getTasks();
         dbc.getStatuses(tasks);
     }
@@ -56,13 +56,13 @@ public class Tasklist extends Application {
                 }
             });
 
-
+            //Creates the dropdown menu, adds the children to it
             MenuItem menuItemInsert = new MenuItem(sl.getPlainText(), checkbox);
             filterMenu.getItems().add(menuItemInsert);
         }
 
         final Menu optionsMenu = new Menu("Options");
-
+        //Creates the menubar and adds the elements created above to it
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(filterMenu, optionsMenu);
 
@@ -76,10 +76,10 @@ public class Tasklist extends Application {
             listitem.add(new TaskItem(task));
             index.add(new ListIndex(task.getId(), iterator));
         }
-
+        //Creates a TaskViewer and sends the last task with it
         rightMenu = new TaskViewer(tasks.getLast());
 
-        //Whenever an item in the list is selected it becomes the
+        //Whenever an item in the list is selected it becomes the item seen in the rightMenu
         list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TaskItem>() {
             @Override
             public void changed(ObservableValue<? extends TaskItem> observable, TaskItem oldValue, TaskItem newValue) {
@@ -110,7 +110,11 @@ public class Tasklist extends Application {
         primaryStage.show();
     }
     private void editViewList(int statusLevelId, Boolean value){
-
+        /*
+        Method is called by the checkboxes in the topmenu change value
+        When called it changes the items that are avalible to the viewable list
+        if (statusLevel matches) ? add items to list : remove items to list
+         */
         if(value){
             for(int i = 0; i < index.size(); i++){
                 if(statusLevelId == tasks.get(i).getStatuses().getLast().getLevel().getId()){
@@ -128,7 +132,10 @@ public class Tasklist extends Application {
             }
         }
     }
+    public static void editWindow(){
+        //this.list.getSelectionModel().getSelectedItem().getTask();
 
+    }
     public static void main(String[] args) {
         new Tasklist();
         launch(args);

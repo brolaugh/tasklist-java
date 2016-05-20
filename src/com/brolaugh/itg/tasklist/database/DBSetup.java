@@ -10,8 +10,9 @@ public class DBSetup {
     private String password = "rickardh";
     private String driver = "com.mysql.jdbc.Driver";
     protected Connection dbc;
-
+    //A class for storing database credentials to make git commits and pushes less worrying
     public DBSetup(){
+
         try{
             Class.forName(driver).newInstance();
             dbc = DriverManager.getConnection("jdbc:mysql://"+host+"/"+database,user,password);
